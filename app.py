@@ -38,5 +38,24 @@ if uploaded_file is not None:
     st.write("Preview of your data:")
     st.dataframe(df)
 
+    st.write("DEBUG: Reached the email_text check")
     if "email_text" in df.columns:
-        results = df["email_text"].apply(classify_email)
+        st.write("DEBUG: email_text column found, starting classification")
+        try:
+            results = df["email_text"].apply(classify_email)
+            df["prediction"] = results.apply(lambda x: x[0])
+            df["confidence"] = results.apply(lambda x: round(x[1], 1))
+
+            st.write("Classified Results:")
+            st.dataframe(df)
+
+            st.write("Basic Stats:")
+            st.write(f"Total emails: {len(df)}")
+            st.write(f"Phishing detected: {(df['prediction'] == 'PHISHING').sum()}")
+            st.write(f"Legitimate: {(df['prediction'] == 'LEGITIMATE').sum()}")
+            st.write(f"Average confidence: {df['confidence'].mean():.1f}%")
+            st.write(f"Max confidence: {df['confidence'].max():.1f}%")
+        except Exception as e:
+            st.error(f"Something broke during classification: {e}")
+    else:
+        st.error("CSV must have a column named 'email_text'")
