@@ -38,9 +38,9 @@ if uploaded_file is not None:
     st.write("Preview of your data:")
     st.dataframe(df)
 
-    st.write("DEBUG: Reached the email_text check")
+   
     if "email_text" in df.columns:
-        st.write("DEBUG: email_text column found, starting classification")
+        
         try:
             results = df["email_text"].apply(classify_email)
             df["prediction"] = results.apply(lambda x: x[0])
