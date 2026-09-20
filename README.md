@@ -31,3 +31,8 @@ This demonstrates a realistic ML development cycle: build → test → find fail
 
 ## Author
 Rai — career transition into AI/security tooling
+## Live Demo
+Try it here: https://phishing-email-classifier-e3fk2wqnvtrjcywhbakpyi.streamlit.app/
+
+## Deployment Notes
+Deployed as a live Streamlit app supporting both single-email classification and CSV batch analysis. During deployment I hit a scikit-learn version mismatch between the training environment (Colab) and production (Streamlit Cloud), which caused batch processing to fail silently. I isolated the failure point using debug logging, traced it to an indentation bug in the batch section, fixed it, and pinned matching library versions across both environments.
